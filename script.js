@@ -148,4 +148,5 @@ window.addEventListener("keydown", e => {
   if (e.key === "Escape" && player.style.display === "flex") {
     cerrarBtn.click();
   }
+
 });
