@@ -15,30 +15,23 @@ const peliculasSueltas = [
 
 // Series (por ahora solo "El Encargado")
 const series = {
-  "El Encargado": [
-    { 
-      episodio: 1, 
-      titulo: "El Encargado - T3 E01", 
-      img: "img/Encargado.jpg", 
-      link: "https://mega.nz/embed/9UdQkDyT#r9xdfavurFJlr7GW3A4Mbl7xdd3Q-ep4yIxGuNqsUJs" 
-    },
-    { 
-      episodio: 2, 
-      titulo: "El Encargado - T3 E02", 
-      img: "img/Encargado.jpg", 
-      link: "https://mega.nz/embed/OTRO_LINK_E02#CLAVE_E02"   // ← CAMBIA ESTE LINK
-    },
-    { 
-      episodio: 3, 
-      titulo: "El Encargado - T3 E03", 
-      img: "img/Encargado.jpg", 
-      link: "https://mega.nz/embed/hNd0gRDQ#PQlhvu_jckC6wytBPW256Tpe4AMTWO8NN6LchNxn000"   // ← CAMBIA ESTE LINK
-    },
-    // Agrega aquí más episodios cuando los tengas
-    // { episodio: 4, titulo: "...", img: "...", link: "..." },
-  ]
-  // Si después agregas otra serie, ponla aquí:
-  // "Otra Serie": [ ... ]
+  // Dentro de const series = { ... }
+"El Encargado": [
+  { 
+    episodio: 1, 
+    titulo: "El Encargado - T3 E01", 
+    img: "img/Encargado.jpg", 
+    link: "https://www.dropbox.com/scl/fi/9p2x1kbsc3xlgvawhpiii/ElencargadoT3E1.mp4?rlkey=uvaib3uieqffizznvb4j7i6rf&st=gbs8wq5g&raw=1"
+  },
+  // Para episodios 2, 3, etc., haz lo mismo: cambia &dl=0 por &raw=1 en sus links compartidos
+  { 
+    episodio: 2, 
+    titulo: "El Encargado - T3 E02", 
+    img: "img/Encargado.jpg", 
+    link: "https://www.dropbox.com/scl/fi/OTRO_ID/ElencargadoT3E2.mp4?rlkey=OTRO_RLKEY&st=OTRO_ST&raw=1"
+  },
+  // ... más episodios
+]
 };
 
 // Portadas que se muestran en la grilla (primera de cada serie + películas sueltas)

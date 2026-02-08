@@ -224,3 +224,122 @@ body{
   transform: none;
 }
 
+/* ==============================================
+   Optimizaciones para TV / pantallas grandes (4K, Full HD TV)
+   ============================================== */
+
+/* Para TVs y monitores grandes (> 1400px) */
+@media (min-width: 1400px) {
+  body {
+    font-size: 1.1rem;          /* texto base un poco más grande */
+  }
+
+  .contenido {
+    padding: 60px 80px;         /* más margen lateral para no pegarse a los bordes */
+    max-width: 1800px;          /* limita el ancho máximo para que no se estire demasiado en 4K */
+    margin: 0 auto;             /* centra todo */
+  }
+
+  h2 {
+    font-size: 3.5rem;          /* títulos mucho más grandes */
+    margin-bottom: 40px;
+  }
+
+  /* Grid de películas: más grandes y menos columnas por fila para TV */
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));  /* posters más grandes */
+    gap: 40px;                  /* más espacio entre tarjetas */
+  }
+
+  .card img {
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.8);  /* sombra más dramática en TV */
+  }
+
+  .card:hover {
+    transform: scale(1.12);     /* zoom más notorio */
+  }
+
+  /* Navbar más grande y espaciado */
+  .navbar {
+    padding: 30px 80px;
+    font-size: 1.4rem;
+  }
+
+  .menu li {
+    font-size: 1.4rem;
+    gap: 50px;
+  }
+
+  .logo {
+    font-size: 3rem;
+  }
+}
+
+/* Pantallas ultra grandes (4K reales, ~3840px) */
+@media (min-width: 2560px) and (min-resolution: 2dppx) {  /* o min-width: 3840px si querés más extremo */
+  .contenido {
+    max-width: 2200px;          /* aprovecha más ancho sin exagerar */
+  }
+
+  h2 {
+    font-size: 4.2rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 50px;
+  }
+
+  .card img {
+    border-radius: 20px;
+  }
+}
+
+/* ==============================================
+   Mejoras específicas para el reproductor en TV
+   ============================================== */
+@media (min-width: 1400px) {
+  .player {
+    padding: 40px;
+    background: rgba(0,0,0,0.97);  /* casi negro puro para modo cine */
+  }
+
+  .videoWrapper {
+    width: 95%;                 /* ocupa casi toda la pantalla */
+    max-width: 2400px;          /* para 4K no se estire infinito */
+    aspect-ratio: 16 / 9;
+    margin: 30px 0;
+  }
+
+  .videoWrapper iframe,
+  .videoWrapper video {       /* si cambias a <video> después */
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+  }
+
+  #playerTitulo {
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+  }
+
+  .cerrar {
+    top: 40px;
+    right: 50px;
+    padding: 16px 28px;
+    font-size: 1.8rem;
+    border-radius: 12px;
+  }
+
+  .controles {
+    gap: 60px;
+    margin-top: 40px;
+  }
+
+  .controles button {
+    padding: 18px 40px;
+    font-size: 1.6rem;
+    min-width: 220px;
+    border-radius: 14px;
+  }
+}
