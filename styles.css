@@ -1,345 +1,173 @@
-:root{
-  --bg:#0f0f0f;
-  --card:#1a1a1a;
-  --nav:#111;
-  --text:#fff;
-  --accent:#2f7df6;
+:root {
+  --bg-start: #0a1f3d;      /* azul marino oscuro */
+  --bg-end:   #000814;      /* casi negro con tinte azul */
+  --accent:   #3b82f6;      /* azul vivo para botones */
+  --text:     #f1f5f9;
+  --card-bg:  #1e293b;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Segoe UI, Arial, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-body{
-  background:var(--bg);
-  color:var(--text);
+body {
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* NAVBAR */
-.navbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px 40px;
-  background:var(--nav);
-  border-bottom:1px solid #222;
+/* Contenido principal */
+.contenido {
+  padding: 2rem 1rem;
+  max-width: 1800px;
+  margin: 0 auto;
 }
 
-/* LOGO ANIMADO */
-.logo{
-  font-size:24px;
-  font-weight:800;
-  cursor:pointer;
-  transition:.3s;
+/* Grid de portadas */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
 }
 
-.logo:hover{
-  color:var(--accent);
-  text-shadow:0 0 12px var(--accent);
-}
-
-/* MENU */
-.menu{
-  display:flex;
-  gap:25px;
-  list-style:none;
-}
-
-.menu li{
-  cursor:pointer;
-  color:#bbb;
-  transition:.2s;
-}
-
-.menu li:hover{
-  color:var(--accent);
-}
-
-/* CONTENIDO */
-.contenido{
-  padding:40px;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-  gap:20px;
-  margin-top:20px;
-}
-
-/* TARJETAS */
-.card{
-  cursor:pointer;
-  transition:.25s;
-}
-
-.card img{
-  width:100%;
-  border-radius:10px;
-  box-shadow:0 8px 18px rgba(0,0,0,.7);
-}
-
-.card:hover{
-  transform:scale(1.07);
-}
-
-/* PLAYER */
-.player{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#000000f2;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index:1000;
-}
-
-.videoWrapper{
-  width:85%;
-  height:75%;
-}
-
-.videoWrapper iframe{
-  width:100%;
-  height:100%;
-  border:none;
-  border-radius:12px;
-}
-
-.cerrar{
-  position:absolute;
-  top:20px;
-  right:25px;
-  background:var(--accent);
-  border:none;
-  padding:8px 14px;
-  color:white;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.video-caja {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-#iframeVideo {
-  width: 80%;
-  height: 420px;
-  border-radius: 12px;
-  border: none;
-}
-
-.controles {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.controles button {
-  background: #0d6efd;
-  color: white;
-  border: none;
-  padding: 12px 22px;
-  border-radius: 10px;
+.card {
   cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card-bg);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
 }
 
-.controles button:hover {
-  background: #0b5ed7;
-  transform: scale(1.05);
+.card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 2 / 3; /* típico de posters */
+  object-fit: cover;
 }
 
-.oculto {
-  display: none !important;
+.card:hover {
+  transform: scale(1.06);
+  box-shadow: 0 12px 32px rgba(59,130,246,0.3);
 }
 
-/* Ajustes al player para que se vea bien con controles */
+/* Reproductor */
 .player {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0,0,0,0.96);
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  padding: 20px;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
 .player.mostrar {
   display: flex;
+  opacity: 1;
 }
 
 .videoWrapper {
-  width: 90%;
-  max-width: 1280px;
+  width: 92%;
+  max-width: 1600px;
   aspect-ratio: 16 / 9;
-  margin: 15px 0;
+  margin: 1rem 0;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
 }
 
-.videoWrapper iframe {
+.videoWrapper video {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+}
+
+#playerTitulo {
+  font-size: 1.8rem;
+  margin: 1rem 0 0.5rem;
+  text-align: center;
+  max-width: 90%;
+}
+
+.cerrar {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: var(--accent);
+  color: white;
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  padding: 0.8rem 1.2rem;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.cerrar:hover {
+  background: #2563eb;
+  transform: scale(1.1);
 }
 
 .controles {
   display: flex;
-  gap: 30px;
-  margin-top: 20px;
+  gap: 2rem;
+  margin-top: 1.5rem;
 }
 
 .controles button {
-  background: #0d6efd;
+  background: var(--accent);
   color: white;
   border: none;
-  padding: 12px 28px;
+  padding: 0.8rem 1.8rem;
   border-radius: 10px;
-  cursor: pointer;
   font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.25s;
   min-width: 140px;
-  transition: all 0.2s;
 }
 
 .controles button:hover {
-  background: #0b5ed7;
+  background: #2563eb;
   transform: translateY(-2px);
 }
 
 .controles button:disabled {
-  background: #444;
+  background: #4b5563;
   cursor: not-allowed;
   transform: none;
+  opacity: 0.6;
 }
 
-/* ==============================================
-   Optimizaciones para TV / pantallas grandes (4K, Full HD TV)
-   ============================================== */
-
-/* Para TVs y monitores grandes (> 1400px) */
-@media (min-width: 1400px) {
-  body {
-    font-size: 1.1rem;          /* texto base un poco más grande */
-  }
-
-  .contenido {
-    padding: 60px 80px;         /* más margen lateral para no pegarse a los bordes */
-    max-width: 1800px;          /* limita el ancho máximo para que no se estire demasiado en 4K */
-    margin: 0 auto;             /* centra todo */
-  }
-
-  h2 {
-    font-size: 3.5rem;          /* títulos mucho más grandes */
-    margin-bottom: 40px;
-  }
-
-  /* Grid de películas: más grandes y menos columnas por fila para TV */
+/* Responsive */
+@media (min-width: 500px) {
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));  /* posters más grandes */
-    gap: 40px;                  /* más espacio entre tarjetas */
-  }
-
-  .card img {
-    border-radius: 16px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.8);  /* sombra más dramática en TV */
-  }
-
-  .card:hover {
-    transform: scale(1.12);     /* zoom más notorio */
-  }
-
-  /* Navbar más grande y espaciado */
-  .navbar {
-    padding: 30px 80px;
-    font-size: 1.4rem;
-  }
-
-  .menu li {
-    font-size: 1.4rem;
-    gap: 50px;
-  }
-
-  .logo {
-    font-size: 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 
-/* Pantallas ultra grandes (4K reales, ~3840px) */
-@media (min-width: 2560px) and (min-resolution: 2dppx) {  /* o min-width: 3840px si querés más extremo */
-  .contenido {
-    max-width: 2200px;          /* aprovecha más ancho sin exagerar */
-  }
-
-  h2 {
-    font-size: 4.2rem;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 50px;
-  }
-
-  .card img {
-    border-radius: 20px;
-  }
+@media (min-width: 768px) {
+  .contenido { padding: 3rem 2rem; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; }
+  #playerTitulo { font-size: 2.4rem; }
 }
 
-/* ==============================================
-   Mejoras específicas para el reproductor en TV
-   ============================================== */
-@media (min-width: 1400px) {
-  .player {
-    padding: 40px;
-    background: rgba(0,0,0,0.97);  /* casi negro puro para modo cine */
-  }
+@media (min-width: 1200px) {
+  .grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .videoWrapper { width: 85%; }
+  #playerTitulo { font-size: 3rem; }
+}
 
-  .videoWrapper {
-    width: 95%;                 /* ocupa casi toda la pantalla */
-    max-width: 2400px;          /* para 4K no se estire infinito */
-    aspect-ratio: 16 / 9;
-    margin: 30px 0;
-  }
-
-  .videoWrapper iframe,
-  .videoWrapper video {       /* si cambias a <video> después */
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-  }
-
-  #playerTitulo {
-    font-size: 3.5rem;
-    margin-bottom: 30px;
-  }
-
-  .cerrar {
-    top: 40px;
-    right: 50px;
-    padding: 16px 28px;
-    font-size: 1.8rem;
-    border-radius: 12px;
-  }
-
-  .controles {
-    gap: 60px;
-    margin-top: 40px;
-  }
-
-  .controles button {
-    padding: 18px 40px;
-    font-size: 1.6rem;
-    min-width: 220px;
-    border-radius: 14px;
-  }
+@media (min-width: 1800px) {
+  .grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .videoWrapper { width: 80%; max-width: 1800px; }
 }

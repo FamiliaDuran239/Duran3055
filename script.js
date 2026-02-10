@@ -1,151 +1,118 @@
-// script.js
-
-// Películas sueltas (sin episodios)
-const peliculasSueltas = [
-  { tipo: "pelicula", titulo: "Clásico 2", img: "img/Zotopia2.jpg", link: "https://mega.nz/embed/ID2#CLAVE2" },
-  { tipo: "pelicula", titulo: "Clásico 3", img: "img/3.jpg", link: "https://mega.nz/embed/ID3#CLAVE3" },
-  { tipo: "pelicula", titulo: "Clásico 4", img: "img/4.jpg", link: "https://mega.nz/embed/ID4#CLAVE4" },
-  { tipo: "pelicula", titulo: "Clásico 5", img: "img/5.jpg", link: "https://mega.nz/embed/ID5#CLAVE5" },
-  { tipo: "pelicula", titulo: "Clásico 6", img: "img/6.jpg", link: "https://mega.nz/embed/ID6#CLAVE6" },
-  { tipo: "pelicula", titulo: "Clásico 7", img: "img/7.jpg", link: "https://mega.nz/embed/ID7#CLAVE7" },
-  { tipo: "pelicula", titulo: "Clásico 8", img: "img/8.jpg", link: "https://mega.nz/embed/ID8#CLAVE8" },
-  { tipo: "pelicula", titulo: "Clásico 9", img: "img/9.jpg", link: "https://mega.nz/embed/ID9#CLAVE9" },
-  { tipo: "pelicula", titulo: "Clásico 10", img: "img/10.jpg", link: "https://mega.nz/embed/ID10#CLAVE10" }
+// 6 elementos de ejemplo (1 serie + 5 películas)
+const items = [
+  { 
+    titulo: "El Encargado T3 E01", 
+    img: "img/Encargado.jpg", 
+    link: "https://www.dropbox.com/scl/fi/9p2x1kbsc3xlgvawhpiii/ElencargadoT3E1.mp4?rlkey=uvaib3uieqffizznvb4j7i6rf&st=gbs8wq5g&raw=1",
+    esSerie: true,
+    serieId: "encargado",
+    episodio: 1
+  },
+  { titulo: "Zootopia 2", img: "img/Zotopia2.jpg", link: "https://www.dropbox.com/s/.../peli2.mp4?raw=1", esSerie: false },
+  { titulo: "Ip Man - La leyenda", img: "img/Ip man.jpg", link: "https://www.dropbox.com/s/.../peli3.mp4?raw=1", esSerie: false },
+  { titulo: "Película 4", img: "img/4.jpg", link: "https://www.dropbox.com/s/.../peli4.mp4?raw=1", esSerie: false },
+  { titulo: "Película 5", img: "img/5.jpg", link: "https://www.dropbox.com/s/.../peli5.mp4?raw=1", esSerie: false },
+  { titulo: "Película 6", img: "img/6.jpg", link: "https://www.dropbox.com/s/.../peli6.mp4?raw=1", esSerie: false }
 ];
 
-// Series (por ahora solo "El Encargado")
+// Para la serie (puedes agregar más episodios aquí)
 const series = {
-  // Dentro de const series = { ... }
-"El Encargado": [
-  { 
-    episodio: 1, 
-    titulo: "El Encargado - T3 E01", 
-    img: "img/Encargado.jpg", 
-    link: "https://www.dropbox.com/scl/fi/9p2x1kbsc3xlgvawhpiii/ElencargadoT3E1.mp4?rlkey=uvaib3uieqffizznvb4j7i6rf&st=gbs8wq5g&raw=1"
-  },
-  // Para episodios 2, 3, etc., haz lo mismo: cambia &dl=0 por &raw=1 en sus links compartidos
-  { 
-    episodio: 2, 
-    titulo: "El Encargado - T3 E02", 
-    img: "img/Encargado.jpg", 
-    link: "https://www.dropbox.com/scl/fi/OTRO_ID/ElencargadoT3E2.mp4?rlkey=OTRO_RLKEY&st=OTRO_ST&raw=1"
-  },
-  // ... más episodios
-]
+  encargado: [
+    { episodio: 1, titulo: "El Encargado T3 E01", link: items[0].link },
+    { episodio: 2, titulo: "El Encargado T3 E02", link: "https://www.dropbox.com/scl/fi/qu3l51o34jrh2ni1h28ws/ElencargadoT3E2.mp4?rlkey=wwame4dfdg0930ibcyp09ug0u&st=qryksy6f&dl=1" },
+     { episodio: 3, titulo: "El Encargado T3 E03", link: "https://www.dropbox.com/scl/fi/49psl4o0orhzyc1ocfubw/ElencargadoT3E3.mp4?rlkey=fohcvb0s5r9bh8eifycucbqyv&st=awiqi4gl&dl=1" },
+    // agrega más si tienes
+  ]
 };
 
-// Portadas que se muestran en la grilla (primera de cada serie + películas sueltas)
-const portadasGrilla = [
-  series["El Encargado"][0],   // El Encargado empieza en el episodio 1
-  ...peliculasSueltas
-];
-
-const grid         = document.getElementById("gridPeliculas");
-const player       = document.getElementById("player");
-const frame        = document.getElementById("frameVideo");
-const titulo       = document.getElementById("playerTitulo");
-const cerrarBtn    = document.getElementById("cerrarBtn");
-const btnVolver    = document.getElementById("btnVolver");
+const grid = document.getElementById("gridPeliculas");
+const player = document.getElementById("player");
+const tituloElem = document.getElementById("playerTitulo");
+const video = document.getElementById("frameVideo");
+const cerrarBtn = document.getElementById("cerrarBtn");
+const controlesSerie = document.getElementById("controlesSerie");
+const btnVolver = document.getElementById("btnVolver");
 const btnSiguiente = document.getElementById("btnSiguiente");
 
-let itemActual    = null;     // el objeto que se está reproduciendo
-let listaActual   = null;     // array de episodios (solo si es serie)
-let indiceEnLista = -1;
+let currentIndex = -1;
+let currentSerie = null;
 
-// Crear las tarjetas en la grilla
-portadasGrilla.forEach((item, idx) => {
+// Crear portadas
+items.forEach((item, index) => {
   const card = document.createElement("div");
   card.className = "card";
   card.innerHTML = `<img src="${item.img}" alt="${item.titulo}">`;
-  card.onclick = () => abrirItem(item);
+  card.onclick = () => abrirReproductor(index);
   grid.appendChild(card);
 });
 
-function abrirItem(item) {
-  itemActual = item;
+function abrirReproductor(index) {
+  currentIndex = index;
+  const item = items[index];
+  
+  tituloElem.textContent = item.titulo;
+  
+  const source = video.querySelector("source");
+  source.src = item.link;
+  video.load();
+  video.play().catch(() => {});
 
-  // Si es película suelta
-  if (item.tipo === "pelicula") {
-    listaActual = null;
-    indiceEnLista = -1;
-    titulo.textContent = item.titulo;
-    frame.src = item.link;
-    player.style.display = "flex";
-    actualizarBotones();
-    return;
+  if (item.esSerie) {
+    currentSerie = series[item.serieId];
+    controlesSerie.style.display = "flex";
+    actualizarBotonesSerie();
+  } else {
+    currentSerie = null;
+    controlesSerie.style.display = "none";
   }
 
-  // Si es serie (por ahora solo El Encargado)
-  const nombreSerie = "El Encargado";
-  listaActual = series[nombreSerie];
-  
-  // Buscamos el índice del episodio actual
-  indiceEnLista = listaActual.findIndex(ep => ep.link === item.link);
-  if (indiceEnLista === -1) indiceEnLista = 0; // por seguridad
-
-  cargarEpisodio(indiceEnLista);
+  player.classList.add("mostrar");
+  document.body.style.overflow = "hidden";
 }
 
-function cargarEpisodio(indice) {
-  if (!listaActual || indice < 0 || indice >= listaActual.length) return;
-
-  const ep = listaActual[indice];
-  titulo.textContent = ep.titulo;
-  frame.src = ep.link;
-  player.style.display = "flex";
-  indiceEnLista = indice;
-  actualizarBotones();
+function actualizarBotonesSerie() {
+  btnVolver.disabled = currentIndex <= 0;
+  btnSiguiente.disabled = currentIndex >= currentSerie.length - 1;
 }
 
 function siguiente() {
-  if (!listaActual) return; // no es serie → no hace nada
-
-  if (indiceEnLista < listaActual.length - 1) {
-    cargarEpisodio(indiceEnLista + 1);
-  }
+  if (!currentSerie || currentIndex >= currentSerie.length - 1) return;
+  currentIndex++;
+  const ep = currentSerie[currentIndex];
+  tituloElem.textContent = ep.titulo;
+  const source = video.querySelector("source");
+  source.src = ep.link;
+  video.load();
+  video.play().catch(() => {});
+  actualizarBotonesSerie();
 }
 
 function volver() {
-  if (!listaActual) return;
-
-  if (indiceEnLista > 0) {
-    cargarEpisodio(indiceEnLista - 1);
-  }
+  if (!currentSerie || currentIndex <= 0) return;
+  currentIndex--;
+  const ep = currentSerie[currentIndex];
+  tituloElem.textContent = ep.titulo;
+  const source = video.querySelector("source");
+  source.src = ep.link;
+  video.load();
+  video.play().catch(() => {});
+  actualizarBotonesSerie();
 }
 
-function actualizarBotones() {
-  if (!listaActual) {
-    // Película suelta → botones desactivados
-    btnVolver.disabled = true;
-    btnSiguiente.disabled = true;
-    btnVolver.style.opacity = "0.4";
-    btnSiguiente.style.opacity = "0.4";
-    return;
-  }
-
-  // Serie → activar/desactivar según posición
-  btnVolver.disabled    = indiceEnLista <= 0;
-  btnSiguiente.disabled = indiceEnLista >= listaActual.length - 1;
-  
-  btnVolver.style.opacity    = btnVolver.disabled ? "0.4" : "1";
-  btnSiguiente.style.opacity = btnSiguiente.disabled ? "0.4" : "1";
+function cerrar() {
+  video.pause();
+  const source = video.querySelector("source");
+  source.src = "";
+  player.classList.remove("mostrar");
+  document.body.style.overflow = "";
+  currentSerie = null;
+  currentIndex = -1;
 }
 
-// Eventos
-cerrarBtn.onclick = () => {
-  frame.src = "";
-  player.style.display = "none";
-  itemActual = null;
-  listaActual = null;
-  indiceEnLista = -1;
-};
-
+cerrarBtn.onclick = cerrar;
 btnSiguiente.onclick = siguiente;
-btnVolver.onclick    = volver;
+btnVolver.onclick = volver;
 
-// Cerrar con tecla ESC
 window.addEventListener("keydown", e => {
-  if (e.key === "Escape" && player.style.display === "flex") {
-    cerrarBtn.click();
-  }
+  if (e.key === "Escape") cerrar();
 });
